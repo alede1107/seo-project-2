@@ -61,9 +61,13 @@ def get_destination_from_flight(flight_number) -> dict:
       return {"success" : False, "reason" : "airport_not_in_database"}
     
     city = airport_info["city"]
+    state = airport_info["state"]
+    country = airport_info["country"]
     
     return {
             "success" : True, 
             "city" : city, 
+            "state" : state,
+            "country" : country,
             "flight_status" : "active"
             }
