@@ -1,0 +1,32 @@
+:root {
+    --bg-color: white;
+}
+
+html {
+    background-color: var(--bg-color);
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #5ca3ea;
+}
+
+.brand {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:  #5ca3ea;
+}
+
+.brand span {
+  color: #0674c8;
+}
