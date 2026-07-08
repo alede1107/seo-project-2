@@ -24,6 +24,10 @@ Success:
 {
   "success": True,
   "city": <str>,
+  "state": <str>,
+  "country": <str>,
+  "lat": <float>,
+  "lon": <float>
   "flight_status": "active"
 }
 
@@ -63,11 +67,15 @@ def get_destination_from_flight(flight_number) -> dict:
     city = airport_info["city"]
     state = airport_info["state"]
     country = airport_info["country"]
+    lat = airport_info["lat"]
+    lon = airport_info["lon"]
     
     return {
             "success" : True, 
             "city" : city, 
             "state" : state,
             "country" : country,
+            "lat" : lat,
+            "lon" : lon,
             "flight_status" : "active"
             }
