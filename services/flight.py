@@ -16,7 +16,26 @@ load_dotenv()
 BASE_URL = "https://api.aviationstack.com/v1"
 TOKEN = os.getenv("AVIATIONSTACK_API_KEY")
 
-def get_destination_from_flight(flight_number):
+'''
+
+get_destination_from_flight returns a dictionary
+
+Success:
+{
+  "success": True,
+  "city": <str>,
+  "flight_status": "active"
+}
+
+Failure:
+{
+  "success": False,
+  "reason" : <str> ("no_active_flight" or "airport_not_in_database")
+}
+
+'''
+
+def get_destination_from_flight(flight_number) -> dict:
 
   flight_number = flight_number.strip().upper()
 
