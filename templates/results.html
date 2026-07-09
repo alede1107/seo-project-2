@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results – FlightScope</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <div class="topbar">
+    <a href="/" class="brand">Flight<span>Scope</span></a>
+    <a href="/" class="topbar-link">New search</a>
+  </div>
+
+  {% macro category_icon(slug) %}
+  {% if slug == 'weather' %}
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16a4 4 0 0 1-.5-7.97A5.5 5.5 0 0 1 17.3 9.02 4 4 0 0 1 17 16H7Z"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/></svg>
+  {% elif slug == 'concern' %}
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg>
+  {% elif slug == 'local-interest' %}
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.4 7-11.5A7 7 0 0 0 5 9.5C5 14.6 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.2"/></svg>
+  {% else %}
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="1.5"/><path d="M7 9h6M7 12.5h6M7 16h3"/><path d="M17 8h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9"/></svg>
+  {% endif %}
+  {% endmacro %}
+
+  {% if not success %}
+
+  <div class="hero">
+    <h1>We hit a snag</h1>
+  </div>
+
+  <div class="search-card card">
+    <div class="form-error">
+      {% if stage == 'flight' %}
+        {% if reason == 'no_active_flight' %}
+          We couldn't find an active flight with number {{ flight_number }}. Double-check the number and try again.
+        {% elif reason == 'airport_not_in_database' %}
+          We found flight {{ flight_number }}, but we don't have destination data for its arrival airport yet.
+        {% else %}
+          We're having trouble reaching flight data right now. Please try again shortly.
+        {% endif %}
+      {% elif stage == 'news' %}
+        {% if reason == 'no_local_articles' or reason == 'no_articles_found' %}
+          We found your flight, but couldn't find any local stories for your destination yet.
+        {% else %}
+          We found your flight, but couldn't load local news right now. Please try again shortly.
+        {% endif %}
+      {% else %}
+        Something unexpected happened. Please try again.
+      {% endif %}
+    </div>
+    <a class="btn-primary" href="/" style="display:block;text-align:center;text-decoration:none;">Try another flight</a>
+  </div>
+
+  {% else %}
+
+  <div class="flight-card card">
+    <div class="flight-card-route">
+      <div class="flight-endpoint">
+        <p class="endpoint-label">Flight</p>
+        <p class="endpoint-value">{{ flight_number|upper }}</p>
+      </div>
+
+      <div class="route-arrow">
+        <span class="route-line"></span>
+        <span class="route-plane">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z"/></svg>
+        </span>
+        <span class="route-line"></span>
+      </div>
+
+      <div class="flight-endpoint">
+        <p class="endpoint-label">Arriving in</p>
+        <p class="endpoint-value">{{ destination.city }}</p>
+        <p class="endpoint-sub">{% if destination.state %}{{ destination.state }}, {% endif %}{{ destination.country }}</p>
+      </div>
+    </div>
+
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      {{ destination.flight_status|capitalize }}
+    </div>
+  </div>
+
+  {% set categories = articles | map(attribute='category') | unique | list %}
+
+  <div class="section-heading">
+    <h2>What's happening in <em>{{ destination.city }}</em></h2>
+    <span class="meta-note">{{ articles|length }} {{ 'story' if articles|length == 1 else 'stories' }} found</span>
+  </div>
+
+  <div class="filter-chips" id="filterChips">
+    <button class="chip active" data-filter="all" type="button">Top news</button>
+    {% for cat in categories %}
+    <button class="chip" data-filter="{{ cat|lower|replace(' ', '-') }}" type="button">{{ cat|capitalize }}</button>
+    {% endfor %}
+  </div>
+
+  <div class="news-list" id="newsList">
+    {% for article in articles %}
+    {% set slug = article.category|lower|replace(' ', '-') %}
+    <a class="news-card" data-category="{{ slug }}" href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
+      <span class="icon-tile tile-{{ slug }}">{{ category_icon(slug) }}</span>
+
+      <span class="news-content">
+        <span class="news-title">{{ article.title }}</span>
+        <span class="news-summary">{{ article.text|truncate(140) }}</span>
+        <span class="news-meta">
+          <span class="news-category">{{ article.category|capitalize }}</span>
+          <span class="dot">&middot;</span>
+          <span class="news-date">{{ (article.publish_date or '')[:10] }}</span>
+        </span>
+      </span>
+
+      <span class="chevron">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+    {% endfor %}
+  </div>
+
+  {% if not articles %}
+  <div class="empty-state card">No local stories for {{ destination.city }} right now. Check back closer to your flight.</div>
+  {% endif %}
+
+  {% endif %}
+
+  <script>
+    (function () {
+      var chips = document.querySelectorAll('#filterChips .chip');
+      var cards = document.querySelectorAll('#newsList .news-card');
+      if (!chips.length) return;
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          var filter = chip.dataset.filter;
+          cards.forEach(function (card) {
+            card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+          });
+        });
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

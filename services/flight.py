@@ -34,7 +34,7 @@ Success:
 Failure:
 {
   "success": False,
-  "reason" : <str> ("no_active_flight" or "airport_not_in_database")
+  "reason" : <str> ("no_active_flight", "airport_not_in_database", or "flight_api_error")
 }
 
 """
@@ -48,6 +48,10 @@ def get_destination_from_flight(flight_number) -> dict:
         f"{BASE_URL}/flights?access_key={TOKEN}&flight_iata={flight_number}"
     )
     data = response.json()
+
+    if "data" not in data:
+        print(f"aviationstack error response for {flight_number}: {data}")
+        return {"success": False, "reason": "flight_api_error"}
 
     active_flight = None
 
