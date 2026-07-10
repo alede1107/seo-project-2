@@ -27,8 +27,7 @@ def classify_articles(articles, city):
     Articles:
     {article_list}
 
-    Return a JSON object with two fields: 'overall_summary' (a 2-3 sentence summary of what's currently happening in {city}, 
-    based only on the articles you judge as genuinely local. Act as a tour guide to the user/passenger, but be above all informative about what is happening) and 'articles' (a JSON list, one object per article, in the same order, with fields: index, is_local, category, exclude, summary)"""
+    Return a JSON object with two fields: 'overall_summary' (a 2-3 sentence summary of what's currently happening in {city}, based only on the articles you judge as genuinely local. Write it like a well-informed local friend giving a traveler a quick, practical briefing. Include specific, concrete details rather than vague descriptions, and if anything genuinely safety-relevant comes up, mention it clearly and calmly without being alarming.)"""
 
     response = None
     last_error = None
