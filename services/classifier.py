@@ -75,8 +75,8 @@ def classify_articles(articles, city):
                 "url": article["url"],
                 "text": article["text"],
                 "publish_date": article["publish_date"],
-                "category": judgement["category"],
-                "summary": judgement["summary"],
+                "category": judgement.get("category") or "general update",
+                "summary": judgement.get("summary") or "",
             }
         )
     if not results:
