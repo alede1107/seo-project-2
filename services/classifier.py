@@ -2,10 +2,14 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 import json
+import time
 
 load_dotenv()
 
 client = genai.Client()
+
+MAX_ATTEMPTS = 3
+RETRY_DELAY_SECONDS = 2
 
 
 def classify_articles(articles, city):
@@ -25,13 +29,33 @@ def classify_articles(articles, city):
 
     Return your answer as a JSON list, one object per article, in the same order, with fields: index, is_local, category, exclude."""
 
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-        ),
-    )
+    response = None
+    last_error = None
+
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                ),
+            )
+            break  # got a response, stop retrying
+        except Exception as e:
+            last_error = e
+            print(
+                f"gemini request failed (attempt {attempt}/{MAX_ATTEMPTS}): {e!r}"
+            )
+            if attempt < MAX_ATTEMPTS:
+                time.sleep(RETRY_DELAY_SECONDS)
+
+    if response is None:
+        # Every attempt failed (e.g. persistent 503 overload). Re-raise so
+        # app.py's existing try/except around classify_articles catches it
+        # and renders the normal "classifier_unavailable" error page
+        # instead of crashing.
+        raise last_error
 
     judgements = json.loads(response.text)
 

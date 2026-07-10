@@ -7,10 +7,24 @@
     --text-secondary: #5b6b7c;
     --card-bg: #ffffff;
     --radius: 10px;
+
+    /* Category tile palette (results page) */
+    --tile-weather-bg: #eaf3fc;
+    --tile-weather-fg: #0674c8;
+    --tile-concern-bg: #fdecec;
+    --tile-concern-fg: #b3261e;
+    --tile-local-interest-bg: #f4ecfb;
+    --tile-local-interest-fg: #7c3aed;
+    --tile-general-update-bg: #e8f7f0;
+    --tile-general-update-fg: #0f9d63;
+
+    --status-bg: #e8f7f0;
+    --status-fg: #0f9d63;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@1,500;1,600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
 
 * {
     box-sizing: border-box;
@@ -54,6 +68,18 @@ a {
 
 .brand span {
   color: var(--accent-dark);
+}
+
+.topbar-link {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.topbar-link:hover {
+  color: var(--text-primary);
 }
 
 /* ---------- Cards ---------- */
@@ -139,4 +165,299 @@ a {
     padding: 12px 14px;
     font-size: 14px;
     margin-bottom: 16px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* ---------- Results page: flight card ---------- */
+
+.flight-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 40px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.flight-card-route {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.endpoint-label {
+    margin: 0 0 2px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+}
+
+.endpoint-value {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.endpoint-sub {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.route-arrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.route-line {
+    width: 28px;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.route-plane {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background: var(--tile-weather-bg);
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.route-plane svg {
+    width: 14px;
+    height: 14px;
+}
+
+.status-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--status-bg);
+    color: var(--status-fg);
+    border: 1px solid #bfe8d4;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--status-fg);
+}
+
+/* ---------- Results page: section heading ---------- */
+
+.section-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0;
+}
+
+.section-heading em {
+    font-style: italic;
+    color: var(--accent-dark);
+}
+
+.meta-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* ---------- Results page: filter chips ---------- */
+
+.filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.chip {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.chip:hover {
+    border-color: var(--accent-light);
+    color: var(--text-primary);
+}
+
+.chip.active {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    color: white;
+}
+
+/* ---------- Results page: news list ---------- */
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.news-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: inherit;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.15s ease;
+}
+
+.news-card:hover {
+    border-color: var(--accent-light);
+}
+
+.icon-tile {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-tile svg {
+    width: 18px;
+    height: 18px;
+}
+
+.tile-weather { background: var(--tile-weather-bg); color: var(--tile-weather-fg); }
+.tile-concern { background: var(--tile-concern-bg); color: var(--tile-concern-fg); }
+.tile-local-interest { background: var(--tile-local-interest-bg); color: var(--tile-local-interest-fg); }
+.tile-general-update { background: var(--tile-general-update-bg); color: var(--tile-general-update-fg); }
+
+.news-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.news-card:hover .news-title {
+    color: var(--accent-dark);
+}
+
+.news-summary {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.news-category {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.news-meta .dot,
+.news-date {
+    color: var(--text-secondary);
+}
+
+.chevron {
+    flex-shrink: 0;
+    color: var(--border-color);
+    margin-top: 2px;
+}
+
+.chevron svg {
+    width: 15px;
+    height: 15px;
+}
+
+.news-card:hover .chevron {
+    color: var(--accent-light);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 40px 24px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 560px) {
+    .flight-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .flight-card-route {
+        gap: 12px;
+    }
+
+    .endpoint-value {
+        font-size: 19px;
+    }
+
+    .route-line {
+        width: 16px;
+    }
+
+    .status-pill {
+        align-self: stretch;
+        justify-content: center;
+    }
+
+    .news-card {
+        padding: 14px;
+    }
 }
