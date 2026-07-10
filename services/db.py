@@ -28,9 +28,10 @@ CACHE_MINUTES = 15
 def get_cached_search(flight_number):
     #cutoff = (datetime.datetime.now() - datetime.timedelta(minutes=CACHE_MINUTES)).isoformat()
     cursor = conn.execute(
-        "SELECT * FROM searches WHERE flight_number = ? AND searched_at > ? ORDER BY searched_at DESC LIMIT 1",
+        #"SELECT * FROM searches WHERE flight_number = ? AND searched_at > ? ORDER BY searched_at DESC LIMIT 1",
+        "SELECT * FROM searches WHERE flight_number = ? ORDER BY searched_at DESC LIMIT 1",
         #(flight_number, cutoff),
-        (flight_number),
+        (flight_number,),
     )
     row = cursor.fetchone()
     if row is None:
