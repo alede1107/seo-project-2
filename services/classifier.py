@@ -36,7 +36,7 @@ def classify_articles(articles, city):
     for attempt in range(1, MAX_ATTEMPTS + 1):
         try:
             response = client.models.generate_content(
-                model="gemini-3.5-flash",
+                model="gemini-2.5-flash",
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
