@@ -66,7 +66,7 @@ def classify_articles(articles, city):
     results = []
 
     for judgement in judgements:
-        if not judgement["is_local"] or judgement["exclude"]:
+        if judgement["exclude"]:
             continue
         article = articles[judgement["index"]]
         results.append(
