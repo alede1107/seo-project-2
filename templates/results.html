@@ -90,6 +90,7 @@
 
   <div class="section-heading">
     <h2>What's happening in <em>{{ destination.city }}</em></h2>
+    <p class="destination-summary">{{ summary }}</p>
     <span class="meta-note">{{ articles|length }} {{ 'story' if articles|length == 1 else 'stories' }} found</span>
   </div>
 
@@ -108,7 +109,7 @@
 
       <span class="news-content">
         <span class="news-title">{{ article.title }}</span>
-        <span class="news-summary">{{ article.text|truncate(140) }}</span>
+        <span class="news-summary">{{ article.summary }}</span>
         <span class="news-meta">
           <span class="news-category">{{ article.category|capitalize }}</span>
           <span class="dot">&middot;</span>

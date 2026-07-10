@@ -1,3 +1,6 @@
+import json
+from services.db import get_cached_search, save_search
+
 from flask import Flask, render_template, request
 from requests.exceptions import RequestException
 
@@ -18,7 +21,26 @@ def results():
     flight_number = request.form.get("flight_number", "").strip()
 
     if not flight_number:
-        return render_template("index.html", error="Please enter a flight number.")
+      return render_template("index.html", error="Please enter a flight number.")
+    
+    cached = get_cached_search(flight_number)
+
+    if cached is not None:
+        return render_template(
+            "results.html",
+            success=True,
+            flight_number=flight_number,
+            destination={
+                "city": cached["city"],
+                "state": cached["state"],
+                "country": cached["country"],
+                "lat": cached["lat"],
+                "lon": cached["lon"],
+                "flight_status": "active",
+            },
+            articles=json.loads(cached["articles_json"]),
+            summary=cached["summary"],
+        )
 
     try:
         destination = get_destination_from_flight(flight_number)
@@ -82,12 +104,15 @@ def results():
             reason=classified.get("reason"),
         )
 
+    save_search(flight_number, destination, classified["summary"], classified["articles"])
+
     return render_template(
         "results.html",
         success=True,
         flight_number=flight_number,
         destination=destination,
         articles=classified["articles"],
+        summary=classified["summary"],
     )
 
 
