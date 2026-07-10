@@ -27,7 +27,8 @@ def classify_articles(articles, city):
     Articles:
     {article_list}
 
-    Return your answer as a JSON list, one object per article, in the same order, with fields: index, is_local, category, exclude."""
+    Return a JSON object with two fields: 'overall_summary' (a 2-3 sentence summary of what's currently happening in {city}, 
+    based only on the articles you judge as genuinely local. Act as a tour guide to the user/passenger) and 'articles' (a JSON list, one object per article, in the same order, with fields: index, is_local, category, exclude, summary)"""
 
     response = None
     last_error = None
@@ -57,7 +58,10 @@ def classify_articles(articles, city):
         # instead of crashing.
         raise last_error
 
-    judgements = json.loads(response.text)
+    parsed = json.loads(response.text)
+    overall_summary = parsed["overall_summary"]
+    judgements = parsed["articles"]
+
 
     results = []
 
@@ -72,8 +76,10 @@ def classify_articles(articles, city):
                 "text": article["text"],
                 "publish_date": article["publish_date"],
                 "category": judgement["category"],
+                "summary": judgement["summary"],
             }
         )
     if not results:
         return {"success": False, "reason": "no_local_articles"}
-    return {"success": True, "articles": results}
+    return {"success": True, "summary": overall_summary, "articles": results}
+

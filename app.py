@@ -88,6 +88,7 @@ def results():
         flight_number=flight_number,
         destination=destination,
         articles=classified["articles"],
+        summary=classified["summary"],
     )
 
 
