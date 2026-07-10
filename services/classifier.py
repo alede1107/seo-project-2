@@ -22,7 +22,7 @@ def classify_articles(articles, city):
 
     1. is_local: true if the article is genuinely ABOUT {city} (local event, local story, something specific to that place) — false if it merely mentions {city} in passing while being a national/global/unrelated story.
     2. category: one of "concern", "local interest", "weather", "general update" — only if is_local is true.
-    3. exclude: true if the article contains extremely graphic violence (informative news about violence is allowed), is highly politically inflammatory, or otherwise inappropriate for a general travel-news feed — regardless of is_local.
+    3. exclude: true only if the article contains gratuitous, graphic descriptions of violence, or is sensationalized in a way that goes beyond informing the traveler. Do not exclude articles just because they report on real safety concerns like crime, unrest, protests, or violence in the area, that is exactly the kind of information a traveler needs and should be categorized as concern instead.
 
     Articles:
     {article_list}
