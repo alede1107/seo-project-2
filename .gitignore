@@ -2,3 +2,4 @@
 *.py[cod]
 *.log
 flightscope.db
+__pycache__/
